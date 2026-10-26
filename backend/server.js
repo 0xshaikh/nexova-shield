@@ -1,4 +1,4 @@
-// NEXOVA Shield Backend Server
+// ShieldSeek Backend Server
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -203,7 +203,7 @@ app.get('/api/protection/status', (req, res) => {
 const apiKeys = new Map();
 
 app.post('/api/keys/create', (req, res) => {
-    const key = 'nexova_' + Math.random().toString(36).substr(2, 32);
+    const key = 'shieldseek_' + Math.random().toString(36).substr(2, 32);
     const now = Date.now();
     apiKeys.set(key, {
         created: now,
@@ -243,7 +243,7 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(PORT, () => {
-    console.log('=== NEXOVA Shield Backend ===');
+    console.log('=== ShieldSeek Backend ===');
     console.log(`Server running on port ${PORT}`);
     console.log(`API: http://localhost:${PORT}/api`);
     console.log('AI Engine: Initialized');

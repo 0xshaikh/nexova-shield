@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * NEXOVA Shield - API Test Script
+ * ShieldSeek - API Test Script
  * Test all backend endpoints
  */
 
@@ -37,7 +37,7 @@ async function testEndpoint(method, path, body = null) {
 }
 
 async function runTests() {
-    console.log('=== NEXOVA Shield API Tests ===');
+    console.log('=== ShieldSeek API Tests ===');
     console.log(`Base URL: ${BASE_URL}`);
 
     let passed = 0;

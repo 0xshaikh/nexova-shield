@@ -15,6 +15,35 @@
 
 ShieldSeek is a super intelligent AI security platform that monitors, detects, and defends against threats 24/7. Built for websites, servers, and applications that need real-time protection.
 
+## 🌐 Live Links
+
+- **Website**: https://0xshaikh.github.io/shieldseek/
+- **Features**: https://0xshaikh.github.io/shieldseek/features.html
+- **GitHub**: https://github.com/0xshaikh/shieldseek
+- **Backend**: Running on port 3000 (localhost)
+
+## 🎯 Features
+
+### 🔍 Website Scanner
+- Enter any website URL to check security
+- Scans security headers (CSP, X-Frame-Options, HSTS, etc.)
+- Shows real-time results with status indicators
+- Provides recommendations for security improvements
+
+### 🛡️ Security Checks
+- **Content-Security-Policy** - Prevents XSS attacks
+- **X-Frame-Options** - Prevents clickjacking
+- **Strict-Transport-Security** - Forces HTTPS
+- **X-Content-Type-Options** - Prevents MIME sniffing
+- **X-XSS-Protection** - XSS filtering
+- **Referrer-Policy** - Controls referrer information
+
+### 🔴 Threat Detection
+- HTTP (not HTTPS) detection
+- Missing security headers
+- Clickjacking vulnerabilities
+- Security misconfigurations
+
 ## ✨ Features
 
 ### 🤖 AI-Powered Protection
@@ -62,8 +91,8 @@ ShieldSeek is a super intelligent AI security platform that monitors, detects, a
 
 ```bash
 # Clone the repository
-git clone https://github.com/0xshaikh/nexova-shield.git
-cd nexova-shield
+git clone https://github.com/0xshaikh/shieldseek.git
+cd shieldseek
 
 # Install backend dependencies
 cd backend
@@ -177,20 +206,28 @@ curl -X POST http://localhost:3000/api/scan \
 ## 📁 Project Structure
 
 ```
-nexova-shield/
-├── index.html              # Main website
+shieldseek/
+├── index.html              # Main website (GitHub Pages)
 ├── features.html           # Features page
-├── README.md               # This file
-├── .gitignore
 ├── assets/
-│   └── logo.svg            # Logo
+│   └── logo.svg            # ShieldSeek logo
+├── backend/
+│   ├── server.js           # Express backend server
+│   ├── test.js             # API test script
+│   ├── package.json        # Backend dependencies
+│   └── package-lock.json   # Lock file
 ├── screenshots/
 │   └── website.png         # Website screenshot
-└── backend/
-    ├── server.js           # Express backend server
-    ├── package.json        # Dependencies
-    └── package-lock.json   # Lock file
+├── README.md               # This file
+└── LICENSE                 # MIT License
 ```
+
+## 🔗 Links
+
+- **Website**: https://0xshaikh.github.io/shieldseek/
+- **Features**: https://0xshaikh.github.io/shieldseek/features.html
+- **GitHub**: https://github.com/0xshaikh/shieldseek
+- **Backend API**: http://localhost:3000/api
 
 ## 🛡️ Threat Signatures Detected
 
@@ -215,9 +252,9 @@ nexova-shield/
 
 ## 🔗 Links
 
-- **Website**: https://0xshaikh.github.io/nexova-shield/
-- **Features**: https://0xshaikh.github.io/nexova-shield/features.html
-- **GitHub**: https://github.com/0xshaikh/nexova-shield
+- **Website**: https://0xshaikh.github.io/shieldseek/
+- **Features**: https://0xshaikh.github.io/shieldseek/features.html
+- **GitHub**: https://github.com/0xshaikh/shieldseek
 - **Backend API**: http://localhost:3000/api
 
 ## 📄 License
@@ -236,7 +273,7 @@ Contributions are welcome! Please:
 ## 📧 Contact
 
 - **GitHub**: https://github.com/0xshaikh
-- **Email**: support@nexova.shield (future)
+- **Email**: support@shieldseek.ai
 
 ---
 
