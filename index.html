@@ -862,211 +862,186 @@
             const searchResults = document.getElementById('searchResults');
             const resultsList = document.getElementById('resultsList');
             
-            // Demo data for when backend is not available
-            const demoResults = [
-                {
-                    url: 'https://example.com',
-                    threats: [{type: 'XSS Attempt', severity: 'MEDIUM', pattern: '<script> tag detected'}],
-                    securityChecks: {
-                        'Content-Security-Policy': false,
-                        'X-Frame-Options': false,
-                        'X-XSS-Protection': false,
-                        'Strict-Transport-Security': false,
-                        'X-Content-Type-Options': false
-                    },
-                    recommendations: [
-                        'Add Content-Security-Policy header',
-                        'Enable HTTP Strict Transportation Security',
-                        'Add X-Frame-Options header',
-                        'Sanitize all user inputs and outputs'
-                    ]
+            // Client-side URL scanner
+            async function scanURL(url) {
+                const results = {
+                    url: url,
+                    threats: [],
+                    securityChecks: {},
+                    recommendations: [],
+                    headers: {}
+                };
+                
+                try {
+                    // Make a request to the target URL
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        mode: 'no-cors', // Avoid CORS issues
+                        signal: AbortSignal.timeout(10000) // 10 second timeout
+                    });
+                    
+                    // Check security headers
+                    const headers = response.headers;
+                    results.headers = {
+                        'Content-Security-Policy': headers.get('content-security-policy'),
+                        'X-Frame-Options': headers.get('x-frame-options'),
+                        'X-XSS-Protection': headers.get('x-xss-protection'),
+                        'Strict-Transport-Security': headers.get('strict-transport-security'),
+                        'X-Content-Type-Options': headers.get('x-content-type-options'),
+                        'Referrer-Policy': headers.get('referrer-policy')
+                    };
+                    
+                    // Convert to boolean checks
+                    Object.keys(results.headers).forEach(function(key) {
+                        results.securityChecks[key] = results.headers[key] !== null && results.headers[key] !== '';
+                    });
+                    
+                    // Check for HTTPS
+                    if (!url.startsWith('https://')) {
+                        results.threats.push({
+                            type: 'HTTP (Not Secure)',
+                            severity: 'HIGH',
+                            pattern: 'Website is not using HTTPS'
+                        });
+                        results.recommendations.push('Force HTTPS for all traffic');
+                    }
+                    
+                    // Check for missing security headers
+                    if (!results.securityChecks['Content-Security-Policy']) {
+                        results.recommendations.push('Add Content-Security-Policy header');
+                    }
+                    
+                    if (!results.securityChecks['X-Frame-Options']) {
+                        results.threats.push({
+                            type: 'Clickjacking Risk',
+                            severity: 'MEDIUM',
+                            pattern: 'X-Frame-Options header missing'
+                        });
+                        results.recommendations.push('Add X-Frame-Options header');
+                    }
+                    
+                    if (!results.securityChecks['Strict-Transport-Security']) {
+                        results.recommendations.push('Enable HTTP Strict Transportation Security');
+                    }
+                    
+                    if (!results.securityChecks['X-Content-Type-Options']) {
+                        results.recommendations.push('Add X-Content-Type-Options: nosniff');
+                    }
+                    
+                } catch (error) {
+                    // CORS or network error - show basic results
+                    results.threats.push({
+                        type: 'Connection Issue',
+                        severity: 'LOW',
+                        pattern: 'Could not fully scan due to CORS restrictions'
+                    });
+                    results.recommendations.push('Check your website security manually');
                 }
-            ];
+                
+                return results;
+            }
             
             searchForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 const url = searchInput.value.trim();
                 
+                // Validate URL
                 if (!url) {
                     return;
                 }
                 
+                // Add https:// if not present
+                let scanUrl = url;
+                if (!scanUrl.startsWith('http://') && !scanUrl.startsWith('https://')) {
+                    scanUrl = 'https://' + scanUrl;
+                }
+                
                 // Show loading state
                 searchResults.classList.add('active');
-                resultsList.innerHTML = '<div class="result-item"><span class="result-icon">⏳</span><span class="result-text">Scanning ' + url + '...</span></div>';
+                resultsList.innerHTML = '<div class="result-item"><span class="result-icon">⏳</span><span class="result-text">Scanning ' + scanUrl + '...</span></div>';
                 
-                try {
-                    // Try to call backend API
-                    const response = await fetch('http://localhost:3000/api/scan', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ url: url }),
-                        signal: AbortSignal.timeout(5000) // 5 second timeout
+                // Perform scan
+                const data = await scanURL(scanUrl);
+                
+                // Clear previous results
+                resultsList.innerHTML = '';
+                
+                // Check if URL is safe
+                const hasThreats = data.threats && data.threats.length > 0;
+                const hasWarnings = data.securityChecks && Object.values(data.securityChecks).some(v => v === false);
+                
+                // Show overall status
+                let status = 'safe';
+                let statusIcon = '✅';
+                let statusText = 'No Major Issues Found';
+                
+                if (hasThreats && data.threats.some(t => t.severity === 'HIGH' || t.severity === 'CRITICAL')) {
+                    status = 'danger';
+                    statusIcon = '🚨';
+                    statusText = 'Critical Threats Detected';
+                } else if (hasThreats || hasWarnings) {
+                    status = 'warning';
+                    statusIcon = '⚠️';
+                    statusText = 'Security Warnings Found';
+                }
+                
+                // Add status header
+                resultsList.innerHTML += `
+                    <div class="result-item">
+                        <span class="result-icon">${statusIcon}</span>
+                        <span class="result-text">${statusText}</span>
+                        <span class="result-status status-${status}">${status.toUpperCase()}</span>
+                    </div>
+                `;
+                
+                // Show threats if any
+                if (hasThreats) {
+                    data.threats.forEach(function(threat) {
+                        resultsList.innerHTML += `
+                            <div class="result-item">
+                                <span class="result-icon">🔴</span>
+                                <span class="result-text">${threat.type}</span>
+                                <span class="result-status status-danger">${threat.severity}</span>
+                            </div>
+                        `;
                     });
-                    
-                    const data = await response.json();
-                    
-                    // Clear previous results
-                    resultsList.innerHTML = '';
-                    
-                    // Check if URL is safe
-                    const hasThreats = data.threats && data.threats.length > 0;
-                    const hasWarnings = data.securityChecks && Object.values(data.securityChecks).some(v => v === false);
-                    
-                    // Show overall status
-                    let status = 'safe';
-                    let statusIcon = '✅';
-                    let statusText = 'No Major Issues Found';
-                    
-                    if (hasThreats) {
-                        status = 'danger';
-                        statusIcon = '🚨';
-                        statusText = 'Critical Threats Detected';
-                    } else if (hasWarnings) {
-                        status = 'warning';
-                        statusIcon = '⚠️';
-                        statusText = 'Security Warnings Found';
-                    }
-                    
-                    // Add status header
-                    resultsList.innerHTML += `
-                        <div class="result-item">
-                            <span class="result-icon">${statusIcon}</span>
-                            <span class="result-text">${statusText}</span>
-                            <span class="result-status status-${status}">${status.toUpperCase()}</span>
-                        </div>
-                    `;
-                    
-                    // Show threats if any
-                    if (hasThreats) {
-                        data.threats.forEach(function(threat) {
+                }
+                
+                // Show security checks
+                if (data.securityChecks) {
+                    Object.keys(data.securityChecks).forEach(function(check) {
+                        if (!data.securityChecks[check]) {
                             resultsList.innerHTML += `
                                 <div class="result-item">
-                                    <span class="result-icon">🔴</span>
-                                    <span class="result-text">${threat.type}</span>
-                                    <span class="result-status status-danger">${threat.severity}</span>
+                                    <span class="result-icon">⚠️</span>
+                                    <span class="result-text">${check}</span>
+                                    <span class="result-status status-warning">MISSING</span>
                                 </div>
                             `;
-                        });
-                    }
-                    
-                    // Show security checks
-                    if (data.securityChecks) {
-                        Object.keys(data.securityChecks).forEach(function(check) {
-                            if (!data.securityChecks[check]) {
-                                resultsList.innerHTML += `
-                                    <div class="result-item">
-                                        <span class="result-icon">⚠️</span>
-                                        <span class="result-text">${check}</span>
-                                        <span class="result-status status-warning">MISSING</span>
-                                    </div>
-                                `;
-                            }
-                        });
-                    }
-                    
-                    // Show recommendations if any
-                    if (data.recommendations && data.recommendations.length > 0) {
-                        resultsList.innerHTML += '<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);"><strong style="color: #00d4aa;">Recommendations:</strong></div>';
-                        data.recommendations.forEach(function(rec) {
+                        } else {
                             resultsList.innerHTML += `
                                 <div class="result-item">
-                                    <span class="result-icon">💡</span>
-                                    <span class="result-text">${rec}</span>
+                                    <span class="result-icon">✅</span>
+                                    <span class="result-text">${check}</span>
+                                    <span class="result-status status-safe">PRESENT</span>
                                 </div>
                             `;
-                        });
-                    }
-                    
-                } catch (error) {
-                    // Backend not available - show demo results
-                    console.log('Backend not available, showing demo results:', error.message);
-                    
-                    const demo = demoResults[0];
-                    
-                    // Clear previous results
-                    resultsList.innerHTML = '';
-                    
-                    // Add demo notice
-                    resultsList.innerHTML += `
-                        <div class="result-item">
-                            <span class="result-icon">ℹ️</span>
-                            <span class="result-text">Demo Mode - Backend not connected</span>
-                            <span class="result-status status-warning">DEMO</span>
-                        </div>
-                    `;
-                    
-                    // Check if URL is safe (demo)
-                    const hasThreats = demo.threats && demo.threats.length > 0;
-                    const hasWarnings = demo.securityChecks && Object.values(demo.securityChecks).some(v => v === false);
-                    
-                    // Show overall status
-                    let status = 'safe';
-                    let statusIcon = '✅';
-                    let statusText = 'No Major Issues Found';
-                    
-                    if (hasThreats) {
-                        status = 'danger';
-                        statusIcon = '🚨';
-                        statusText = 'Critical Threats Detected';
-                    } else if (hasWarnings) {
-                        status = 'warning';
-                        statusIcon = '⚠️';
-                        statusText = 'Security Warnings Found';
-                    }
-                    
-                    // Add status header
-                    resultsList.innerHTML += `
-                        <div class="result-item">
-                            <span class="result-icon">${statusIcon}</span>
-                            <span class="result-text">${statusText}</span>
-                            <span class="result-status status-${status}">${status.toUpperCase()}</span>
-                        </div>
-                    `;
-                    
-                    // Show threats if any
-                    if (hasThreats) {
-                        demo.threats.forEach(function(threat) {
-                            resultsList.innerHTML += `
-                                <div class="result-item">
-                                    <span class="result-icon">🔴</span>
-                                    <span class="result-text">${threat.type}</span>
-                                    <span class="result-status status-danger">${threat.severity}</span>
-                                </div>
-                            `;
-                        });
-                    }
-                    
-                    // Show security checks
-                    if (demo.securityChecks) {
-                        Object.keys(demo.securityChecks).forEach(function(check) {
-                            if (!demo.securityChecks[check]) {
-                                resultsList.innerHTML += `
-                                    <div class="result-item">
-                                        <span class="result-icon">⚠️</span>
-                                        <span class="result-text">${check}</span>
-                                        <span class="result-status status-warning">MISSING</span>
-                                    </div>
-                                `;
-                            }
-                        });
-                    }
-                    
-                    // Show recommendations if any
-                    if (demo.recommendations && demo.recommendations.length > 0) {
-                        resultsList.innerHTML += '<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);"><strong style="color: #00d4aa;">Recommendations:</strong></div>';
-                        demo.recommendations.forEach(function(rec) {
-                            resultsList.innerHTML += `
-                                <div class="result-item">
-                                    <span class="result-icon">💡</span>
-                                    <span class="result-text">${rec}</span>
-                                </div>
-                            `;
-                        });
-                    }
+                        }
+                    });
+                }
+                
+                // Show recommendations if any
+                if (data.recommendations && data.recommendations.length > 0) {
+                    resultsList.innerHTML += '<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);"><strong style="color: #00d4aa;">Recommendations:</strong></div>';
+                    data.recommendations.forEach(function(rec) {
+                        resultsList.innerHTML += `
+                            <div class="result-item">
+                                <span class="result-icon">💡</span>
+                                <span class="result-text">${rec}</span>
+                            </div>
+                        `;
+                    });
                 }
             });
         });

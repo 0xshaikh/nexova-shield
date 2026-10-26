@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(helmet());
 app.use(cors({
-    origin: ['https://nexova-shield.github.io', 'http://localhost:3000'],
+    origin: ['https://0xshaikh.github.io', 'http://localhost:3000', 'http://localhost:5500'],
     credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -143,12 +143,12 @@ function generateRecommendations(scanResult) {
 
 // ============ API ROUTES ============
 
-// Health check
+// Health Check
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'ok',
         version: '1.0.0',
-        engine: 'NEXOVA Shield AI Engine',
+        engine: 'ShieldSeek AI Engine',
         timestamp: new Date().toISOString()
     });
 });
