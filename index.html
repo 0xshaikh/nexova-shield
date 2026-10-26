@@ -11,6 +11,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Font Awesome (Brand Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
@@ -118,7 +123,7 @@
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
             display: flex;
             justify-content: center;
-            gap: 24px;
+            gap: 20px;
         }
         
         .nav-link {
@@ -189,78 +194,11 @@
             width: 100%;
         }
         
-        .trust-row {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: clamp(16px, 2.5vh, 26px);
-            --trust-size: clamp(36px, 4.5vw, 42px);
-        }
-        
-        .avatar-ring {
-            width: var(--trust-size);
-            height: var(--trust-size);
-            background: #28282a;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50%;
-            padding: 5px;
-            display: grid;
-            place-items: center;
-            transition: transform 0.35s;
-        }
-        
-        .avatar-ring:hover {
-            transform: translateY(-2px);
-        }
-        
-        .avatar-ring:nth-child(2) {
-            margin-left: calc(var(--trust-size) * -0.42);
-            z-index: 2;
-        }
-        
-        .avatar-ring:nth-child(2):hover {
-            transform: translateY(-4px);
-        }
-        
-        .avatar-ring:nth-child(3) {
-            margin-left: calc(var(--trust-size) * -0.42);
-            z-index: 4;
-        }
-        
-        .avatar-ring:nth-child(3):hover {
-            transform: translateY(-2px);
-        }
-        
-        .avatar-inner {
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            color: #111;
-            font-size: calc(var(--trust-size) * 0.34);
-        }
-        
-        .trust-pill {
-            height: var(--trust-size);
-            background: #28282a;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 999px;
-            margin-left: calc(var(--trust-size) * -0.42);
-            padding-left: calc(var(--trust-size) * 0.58);
-            padding-right: 16px;
-            display: flex;
-            align-items: center;
-            color: #c4c2c3;
-            font-size: clamp(12px, 1.4vw, 13.5px);
-            font-weight: 500;
-        }
-        
         /* Features Row */
         .features-row {
             display: inline-flex;
             align-items: center;
-            gap: 24px;
+            gap: 16px;
             margin-bottom: clamp(16px, 2.5vh, 26px);
             flex-wrap: wrap;
             justify-content: center;
@@ -434,7 +372,7 @@
         }
         
         /* Mobile */
-        .mobile-burger, .mobile-menu {
+        .mobile-burger, .mobile-menu, .mobile-overlay {
             display: none;
         }
         
@@ -491,6 +429,7 @@
             }
             
             .mobile-overlay {
+                display: block;
                 position: fixed;
                 inset: 0;
                 background: rgba(0, 0, 0, 0.62);
@@ -507,6 +446,7 @@
             }
             
             .mobile-menu {
+                display: block;
                 position: fixed;
                 top: 80px;
                 left: 50%;
@@ -601,21 +541,21 @@
     <div class="content-wrapper">
         <!-- Header -->
         <header class="header">
-            <button class="logo-btn" aria-label="NEXOVA Shield">
-                <img src="assets/logo.svg" alt="" width="52" height="52">
+            <button class="logo-btn" aria-label="NEXOVA Shield" onclick="window.location.href='/'">
+                <img src="assets/logo.svg" alt="NEXOVA Shield" width="52" height="52">
             </button>
             
             <nav class="nav-pill">
-                <a href="#" class="nav-link active">Home</a>
+                <a href="/" class="nav-link active">Home</a>
                 <a href="features.html" class="nav-link">Features</a>
                 <a href="https://github.com/0xshaikh/nexova-shield" target="_blank" class="nav-link">GitHub</a>
-                <a href="#" class="nav-link">Contact</a>
+                <a href="#contact" class="nav-link">Contact</a>
             </nav>
             
-            <button class="signin-btn">Sign In</button>
+            <button class="signin-btn" onclick="window.location.href='#signup'">Sign In</button>
             
             <!-- Mobile Burger -->
-            <button class="mobile-burger" id="mobileBurger" aria-label="Menu">
+            <button class="mobile-burger" id="mobileBurger" aria-label="Toggle menu" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -624,12 +564,12 @@
         
         <!-- Mobile Menu -->
         <div class="mobile-overlay" id="mobileOverlay"></div>
-        <div class="mobile-menu" id="mobileMenu">
-            <a href="#">Home</a>
-            <a href="features.html">Features</a>
-            <a href="https://github.com/0xshaikh/nexova-shield" target="_blank">GitHub</a>
-            <a href="#">Contact</a>
-            <a href="#" style="color: #00d4aa; font-weight: 600;">Sign In</a>
+        <div class="mobile-menu" id="mobileMenu" role="menu">
+            <a href="/" role="menuitem">Home</a>
+            <a href="features.html" role="menuitem">Features</a>
+            <a href="https://github.com/0xshaikh/nexova-shield" target="_blank" role="menuitem">GitHub</a>
+            <a href="#contact" role="menuitem">Contact</a>
+            <a href="#signup" role="menuitem" style="color: #00d4aa; font-weight: 600;">Sign In</a>
         </div>
         
         <!-- Hero -->
@@ -642,7 +582,7 @@
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">🤖</div>
-                    <div class="feature-text">AI-Powered Detection</div>
+                    <div class="feature-text">AI Detection</div>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">⚡</div>
@@ -666,11 +606,11 @@
             <!-- CTA -->
             <a href="https://github.com/0xshaikh/nexova-shield" target="_blank" class="cta-btn">
                 View on GitHub
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
             </a>
         </main>
         
-        <!-- Real Stats -->
+        <!-- Stats -->
         <footer class="stats">
             <div class="stat">
                 <div class="stat-icon">🛡️</div>
@@ -695,49 +635,60 @@
         </footer>
     </div>
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
-          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
-          crossorigin="anonymous" referrerpolicy="no-referrer">
-    
-    <!-- Lucide Icons -->
-    <script>
-        lucide.createIcons();
-    </script>
-    
     <!-- Mobile Menu JS -->
     <script>
-        const burger = document.getElementById('mobileBurger');
-        const overlay = document.getElementById('mobileOverlay');
-        const menu = document.getElementById('mobileMenu');
-        
-        function toggleMenu() {
-            burger.classList.toggle('active');
-            overlay.classList.toggle('active');
-            menu.classList.toggle('active');
-        }
-        
-        burger.addEventListener('click', toggleMenu);
-        overlay.addEventListener('click', toggleMenu);
-        
-        menu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', toggleMenu);
-        });
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && burger.classList.contains('active')) {
-                toggleMenu();
-                burger.focus();
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
             }
-        });
-        
-        // Close on resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 720) {
+            
+            // Mobile Menu
+            const burger = document.getElementById('mobileBurger');
+            const overlay = document.getElementById('mobileOverlay');
+            const menu = document.getElementById('mobileMenu');
+            
+            function toggleMenu() {
+                const isActive = burger.classList.contains('active');
+                burger.classList.toggle('active');
+                overlay.classList.toggle('active');
+                menu.classList.toggle('active');
+                burger.setAttribute('aria-expanded', !isActive);
+            }
+            
+            function closeMenu() {
                 burger.classList.remove('active');
                 overlay.classList.remove('active');
                 menu.classList.remove('active');
+                burger.setAttribute('aria-expanded', 'false');
             }
+            
+            burger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+            
+            overlay.addEventListener('click', closeMenu);
+            
+            menu.querySelectorAll('a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    setTimeout(closeMenu, 300);
+                });
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && burger.classList.contains('active')) {
+                    closeMenu();
+                    burger.focus();
+                }
+            });
+            
+            // Close on resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 720) {
+                    closeMenu();
+                }
+            });
         });
     </script>
 </body>
