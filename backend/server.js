@@ -44,7 +44,7 @@ const THREAT_SIGNATURES = [
     { pattern: /system\s*\(/i, type: 'System Command', severity: 'HIGH' },
     { pattern: /passthru\s*\(/i, type: 'System Command', severity: 'HIGH' },
     { pattern: /shell_exec\s*\(/i, type: 'Command Injection', severity: 'HIGH' },
-    { pattern: /php://input/i, type: 'PHP Wrapper Abuse', severity: 'HIGH' },
+    { pattern: /php:\/\/input/i, type: 'PHP Wrapper Abuse', severity: 'HIGH' },
 ];
 
 // Scan URL function
