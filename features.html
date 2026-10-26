@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXOVA Shield - Features</title>
+    <meta name="description" content="Real features of NEXOVA Shield AI Security Platform">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            background: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #8e8e8e;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 40px;
+            transition: color 0.2s;
+        }
+        
+        .back-btn:hover { color: #fff; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .header h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+        
+        .header p {
+            color: #8e8e8e;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            border-color: rgba(0, 212, 170, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0, 212, 170, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+        
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .feature-card p {
+            color: #8e8e8e;
+            line-height: 1.6;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-top: 16px;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            color: #c4c2c3;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            color: #00d4aa;
+            font-weight: bold;
+        }
+        
+        .threats-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .threats-section h2 {
+            font-size: 28px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .threats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .threat-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .threat-icon {
+            font-size: 24px;
+        }
+        
+        .threat-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .threat-info span {
+            font-size: 12px;
+            color: #8e8e8e;
+        }
+        
+        .severity-high { color: #ff4444; }
+        .severity-medium { color: #ffaa00; }
+        .severity-low { color: #00d4aa; }
+        
+        .api-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+        }
+        
+        .api-section h2 {
+            font-size: 28px;
+            margin-bottom: 24px;
+        }
+        
+        .api-endpoints {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .api-endpoint {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .api-method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        
+        .method-get { background: #00d4aa; color: #000; }
+        .method-post { background: #ffaa00; color: #000; }
+        
+        .api-path { color: #fff; }
+        .api-desc { color: #8e8e8e; margin-left: 40px; margin-top: 4px; }
+        
+        @media (max-width: 720px) {
+            .container { padding: 20px; }
+            .feature-card { padding: 24px; }
+            .threats-section, .api-section { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+        </a>
+        
+        <div class="header">
+            <h1>Real Features</h1>
+            <p>What NEXOVA Shield actually does - no fake claims, just real security capabilities</p>
+        </div>
+        
+        <!-- Main Features -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI Threat Detection</h3>
+                <p>Pattern-based detection engine that scans for known threat signatures in real-time.</p>
+                <ul class="feature-list">
+                    <li>10+ threat signatures</li>
+                    <li>Real-time scanning</li>
+                    <li>Automated analysis</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>URL Scanner</h3>
+                <p>Scan any URL for security vulnerabilities, exposed files, and security header issues.</p>
+                <ul class="feature-list">
+                    <li>Security header check</li>
+                    <li>Exposed file detection</li>
+                    <li>CMS version detection</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Security Recommendations</h3>
+                <p>Get specific, actionable recommendations to improve your website's security posture.</p>
+                <ul class="feature-list">
+                    <li>Content-Security-Policy</li>
+                    <li>HTTPS enforcement</li>
+                    <li>Input sanitization tips</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Threat Intelligence</h3>
+                <p>Access real-time threat statistics and understand the current security landscape.</p>
+                <ul class="feature-list">
+                    <li>Active threats count</li>
+                    <li>Attack type breakdown</li>
+                    <li>Trend analysis</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔑</div>
+                <h3>API Key Management</h3>
+                <p>Create and manage API keys for programmatic access to the scanning service.</p>
+                <ul class="feature-list">
+                    <li>Key generation</li>
+                    <li>Usage tracking</li>
+                    <li>Rate limiting</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Fast Response</h3>
+                <p>Optimized scanning engine that returns results quickly for real-time threat detection.</p>
+                <ul class="feature-list">
+                    <li>Asynchronous scanning</li>
+                    <li>Parallel processing</li>
+                    <li>Low latency</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Threat Signatures -->
+        <div class="threats-section">
+            <h2><i class="fa-solid fa-shield-halved"></i> Detected Threat Types</h2>
+            <div class="threats-grid">
+                <div class="threat-item">
+                    <div class="threat-icon">💉</div>
+                    <div class="threat-info">
+                        <h4>SQL Injection</h4>
+                        <span class="severity-high">HIGH</span>
+                    </div>
+                </div>
+                <div class="threat-item">
+                    <div class="threat-icon">🎭</div>
+                    <div class="threat-info">
+                        <h4>XSS Attempt</h4>
+                        <span class="severity-medium">MEDIUM</span>
+                    </div>
+                </div>
+                <div class="threat-item">
+                    <div class="threat-icon">💣</div>
+                    <div class="threat-info">
+                        <h4>Command Injection</h4>
+                        <span class="severity-high">HIGH</span>
+                    </div>
+                </div>
+                <div class="threat-item">
+                    <div class="threat-icon">📁</div>
+                    <div class="threat-info">
+                        <h4>Directory Traversal</h4>
+                        <span class="severity-high">HIGH</span>
+                    </div>
+                </div>
+                <div class="threat-item">
+                    <div class="threat-icon">🔐</div>
+                    <div class="threat-info">
+                        <h4>PHP Wrapper Abuse</h4>
+                        <span class="severity-high">HIGH</span>
+                    </div>
+                </div>
+                <div class="threat-item">
+                    <div class="threat-icon">📦</div>
+                    <div class="threat-info">
+                        <h4>Encoded Payload</h4>
+                        <span class="severity-medium">MEDIUM</span>
+                    </div>
+                </div>
+                <div class="threat-item">
+                    <div class="threat-icon">⚙️</div>
+                    <div class="threat-info">
+                        <h4>Exposed Files</h4>
+                        <span class="severity-high">HIGH</span>
+                    </div>
+                </div>
+                <div class="threat-item">
+                    <div class="threat-icon">📝</div>
+                    <div class="threat-info">
+                        <h4>Code Injection</h4>
+                        <span class="severity-high">HIGH</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- API Endpoints -->
+        <div class="api-section">
+            <h2><i class="fa-solid fa-code"></i> API Endpoints</h2>
+            <div class="api-endpoints">
+                <div class="api-endpoint">
+                    <span class="api-method method-get">GET</span>
+                    <span class="api-path">/api/health</span>
+                    <div class="api-desc">Health check endpoint</div>
+                </div>
+                <div class="api-endpoint">
+                    <span class="api-method method-post">POST</span>
+                    <span class="api-path">/api/scan</span>
+                    <div class="api-desc">Scan a URL for security issues</div>
+                </div>
+                <div class="api-endpoint">
+                    <span class="api-method method-get">GET</span>
+                    <span class="api-path">/api/threats/intelligence</span>
+                    <div class="api-desc">Get threat intelligence statistics</div>
+                </div>
+                <div class="api-endpoint">
+                    <span class="api-method method-get">GET</span>
+                    <span class="api-path">/api/protection/status</span>
+                    <div class="api-desc">Get protection status dashboard</div>
+                </div>
+                <div class="api-endpoint">
+                    <span class="api-method method-post">POST</span>
+                    <span class="api-path">/api/keys/create</span>
+                    <div class="api-desc">Create a new API key</div>
+                </div>
+                <div class="api-endpoint">
+                    <span class="api-method method-get">GET</span>
+                    <span class="api-path">/api/keys/list</span>
+                    <div class="api-desc">List all API keys</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
