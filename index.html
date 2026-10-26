@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXOVA Shield - AI-Powered Cyber Security</title>
+    <meta name="description" content="Super intelligent AI security shield for your websites and servers. 24/7 threat detection, automatic defense, and proactive bounty hunting.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --muted: #8e8e8e;
+            --accent: #00d4aa;
+            --accent-glow: rgba(0, 212, 170, 0.3);
+            --danger: #ff4444;
+            --warning: #ffaa00;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .bg-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: clamp(16px, 2.4vh, 28px) clamp(14px, 3vw, 32px);
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 720px;
+            gap: clamp(18px, 2.8vw, 28px);
+            margin: 0 auto;
+            flex-shrink: 0;
+            animation: slideDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        
+        .logo-btn {
+            width: clamp(40px, 4.4vw, 46px);
+            height: clamp(40px, 4.4vw, 46px);
+            border-radius: 50%;
+            background: #fff;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+            display: grid;
+            place-items: center;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        
+        .logo-btn:hover {
+            transform: scale(1.04);
+        }
+        
+        .logo-btn img {
+            width: 72%;
+            height: 72%;
+            object-fit: contain;
+        }
+        
+        .nav-pill {
+            background: #fff;
+            height: clamp(44px, 5.2vw, 48px);
+            max-width: 430px;
+            flex: 1;
+            padding: 4px 8px;
+            border-radius: 999px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+        
+        .nav-link {
+            font-size: clamp(13px, 1.4vw, 15px);
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            color: #2e2e2e;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            position: relative;
+            padding: 8px 0;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        
+        .nav-link:hover {
+            opacity: 0.75;
+        }
+        
+        .nav-link.active {
+            opacity: 1;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 3px;
+            background: #2e2e2e;
+            border-radius: 50%;
+            box-shadow: -5px 0 0 #2e2e2e, 5px 0 0 #2e2e2e;
+        }
+        
+        .signin-btn {
+            background: #28282a;
+            color: #c8c8c8;
+            height: clamp(44px, 5.2vw, 48px);
+            padding: 0 20px;
+            border-radius: 999px;
+            border: none;
+            font-size: clamp(13px, 1.4vw, 15px);
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        
+        .signin-btn:hover {
+            background: #323234;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        
+        /* Hero */
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .trust-row {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: clamp(16px, 2.5vh, 26px);
+            --trust-size: clamp(36px, 4.5vw, 42px);
+        }
+        
+        .avatar-ring {
+            width: var(--trust-size);
+            height: var(--trust-size);
+            background: #28282a;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            padding: 5px;
+            display: grid;
+            place-items: center;
+            transition: transform 0.35s;
+        }
+        
+        .avatar-ring:hover {
+            transform: translateY(-2px);
+        }
+        
+        .avatar-ring:nth-child(2) {
+            margin-left: calc(var(--trust-size) * -0.42);
+            z-index: 2;
+        }
+        
+        .avatar-ring:nth-child(2):hover {
+            transform: translateY(-4px);
+        }
+        
+        .avatar-ring:nth-child(3) {
+            margin-left: calc(var(--trust-size) * -0.42);
+            z-index: 4;
+        }
+        
+        .avatar-ring:nth-child(3):hover {
+            transform: translateY(-2px);
+        }
+        
+        .avatar-inner {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: #111;
+            font-size: calc(var(--trust-size) * 0.34);
+        }
+        
+        .trust-pill {
+            height: var(--trust-size);
+            background: #28282a;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 999px;
+            margin-left: calc(var(--trust-size) * -0.42);
+            padding-left: calc(var(--trust-size) * 0.58);
+            padding-right: 16px;
+            display: flex;
+            align-items: center;
+            color: #c4c2c3;
+            font-size: clamp(12px, 1.4vw, 13.5px);
+            font-weight: 500;
+        }
+        
+        .headline {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        
+        .headline span {
+            display: block;
+            font-size: clamp(28px, 6.2vw, 80px);
+            letter-spacing: -0.04em;
+            line-height: 1.12;
+            white-space: nowrap;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(14px);
+            animation: headlineFade 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        
+        .headline span:first-child {
+            animation-delay: 0.12s;
+        }
+        
+        .headline span:last-child {
+            animation-delay: 0.3s;
+        }
+        
+        .subhead {
+            max-width: min(500px, 92%);
+            color: #d0d0d0;
+            opacity: 0.8;
+            font-size: clamp(calc(13.5px + 2pt), calc(1.55vw + 2pt), calc(16.5px + 2pt));
+            line-height: 1.55;
+            font-weight: 400;
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(22px);
+            animation: reveal 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation-delay: 0.28s;
+        }
+        
+        .cta-btn {
+            background: #fff;
+            color: #000;
+            padding: clamp(11px, 1.6vh, 13px) clamp(22px, 3vw, 28px);
+            border-radius: 999px;
+            border: none;
+            font-size: clamp(13.5px, 1.5vw, 14.5px);
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.15), 0 0 22px rgba(255,255,255,0.32), 0 0 44px rgba(255,255,255,0.12);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(22px) scale(0.98);
+            animation: revealPulse 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation-delay: 0.4s;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.2), 0 0 32px rgba(255,255,255,0.4), 0 0 64px rgba(255,255,255,0.16);
+        }
+        
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 920px;
+            margin: 0 auto;
+            flex-shrink: 0;
+        }
+        
+        .stat {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(22px) scale(0.98);
+            filter: blur(6px);
+            animation: reveal 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        
+        .stat:nth-child(1) { animation-delay: 0.5s; }
+        .stat:nth-child(2) { animation-delay: 0.58s; }
+        .stat:nth-child(3) { animation-delay: 0.66s; }
+        .stat:nth-child(4) { animation-delay: 0.74s; }
+        
+        .stat-icon {
+            font-size: clamp(22px, 3vw, 33px);
+            color: #fff;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+        
+        .stat-value {
+            font-size: clamp(18px, 2.2vw, 26px);
+            color: #fff;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .stat-label {
+            color: #8e8e8e;
+            font-size: clamp(11px, 1.2vw, 12.5px);
+            margin-top: 2px;
+        }
+        
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes headlineFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+        
+        @keyframes revealPulse {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+        
+        /* Mobile */
+        .mobile-burger, .mobile-menu {
+            display: none;
+        }
+        
+        @media (max-width: 720px) {
+            .header {
+                justify-content: space-between;
+                max-width: 100%;
+            }
+            
+            .nav-pill, .signin-btn {
+                display: none;
+            }
+            
+            .mobile-burger {
+                display: flex;
+                width: 48px;
+                height: 48px;
+                background: #28282a;
+                border: none;
+                border-radius: 50%;
+                cursor: pointer;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+            }
+            
+            .mobile-burger span {
+                width: 18px;
+                height: 1.5px;
+                background: #fff;
+                transition: all 0.3s;
+            }
+            
+            .mobile-burger.active {
+                background: #fff;
+            }
+            
+            .mobile-burger.active span {
+                background: #000;
+            }
+            
+            .mobile-burger.active span:nth-child(1) {
+                transform: translateY(6.5px) rotate(45deg);
+            }
+            
+            .mobile-burger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .mobile-burger.active span:nth-child(3) {
+                transform: translateY(-6.5px) rotate(-45deg);
+            }
+            
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.62);
+                backdrop-filter: blur(6px);
+                z-index: 50;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.28s;
+            }
+            
+            .mobile-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .mobile-menu {
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%) translateY(-20px);
+                width: calc(100% - 32px);
+                max-width: 400px;
+                background: #fff;
+                border-radius: 28px;
+                padding: 22px 18px 20px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+                z-index: 60;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            
+            .mobile-menu.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+            
+            .mobile-menu a {
+                display: block;
+                padding: 12px 0;
+                color: #2e2e2e;
+                text-decoration: none;
+                font-size: 16px;
+                opacity: 0;
+                transform: translateY(-12px);
+                transition: all 0.3s;
+            }
+            
+            .mobile-menu.active a {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .mobile-menu a:nth-child(1) { transition-delay: 0.05s; }
+            .mobile-menu a:nth-child(2) { transition-delay: 0.1s; }
+            .mobile-menu a:nth-child(3) { transition-delay: 0.15s; }
+            .mobile-menu a:nth-child(4) { transition-delay: 0.2s; }
+            .mobile-menu a:nth-child(5) { transition-delay: 0.25s; }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            
+            .headline span {
+                letter-spacing: -0.08em;
+                line-height: 1.05;
+            }
+        }
+        
+        @media (max-width: 420px) {
+            .headline span {
+                letter-spacing: -0.09em;
+                line-height: 1.04;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .headline span {
+                opacity: 1;
+                transform: none;
+            }
+            
+            .subhead, .cta-btn, .stat {
+                opacity: 1;
+                transform: none;
+                filter: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Video -->
+    <div class="bg">
+        <video class="bg-video" autoplay muted loop playsinline>
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260809_012548_ef22562c-c0ae-4816-ad9d-f8922af4e6a7.mp4" type="video/mp4">
+        </video>
+    </div>
+    
+    <!-- Content -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <button class="logo-btn" aria-label="NEXOVA Shield">
+                <img src="assets/logo.svg" alt="" width="52" height="52">
+            </button>
+            
+            <nav class="nav-pill">
+                <a href="#" class="nav-link active">Home</a>
+                <a href="#" class="nav-link">Product</a>
+                <a href="#" class="nav-link">Case Studies</a>
+                <a href="#" class="nav-link">Contact</a>
+            </nav>
+            
+            <button class="signin-btn">Sign In</button>
+            
+            <!-- Mobile Burger -->
+            <button class="mobile-burger" id="mobileBurger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </header>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#">Home</a>
+            <a href="#">Product</a>
+            <a href="#">Case Studies</a>
+            <a href="#">Contact</a>
+            <a href="#" style="color: #00d4aa; font-weight: 600;">Sign In</a>
+        </div>
+        
+        <!-- Hero -->
+        <main class="hero">
+            <!-- Trust Row -->
+            <div class="trust-row">
+                <div class="avatar-ring">
+                    <div class="avatar-inner">
+                        <i class="fa-brands fa-microsoft"></i>
+                    </div>
+                </div>
+                <div class="avatar-ring">
+                    <div class="avatar-inner">
+                        <i class="fa-brands fa-amazon"></i>
+                    </div>
+                </div>
+                <div class="avatar-ring">
+                    <div class="avatar-inner">
+                        <i class="fa-brands fa-google"></i>
+                    </div>
+                </div>
+                <div class="trust-pill">
+                    Trusted by 2000+ Enterprises
+                </div>
+            </div>
+            
+            <!-- Headline -->
+            <h1 class="headline">
+                <span>AI-Powered Cyber Security</span>
+                <span>That Never Sleeps</span>
+            </h1>
+            
+            <!-- Subhead -->
+            <p class="subhead">
+                Super intelligent AI shield that monitors, detects, and defends against threats 24/7. 
+                Automatic defense, vulnerability scanning, and proactive bounty hunting for your websites and servers.
+            </p>
+            
+            <!-- CTA -->
+            <a href="#" class="cta-btn">
+                Protect My Website
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </main>
+        
+        <!-- Stats -->
+        <footer class="stats">
+            <div class="stat">
+                <div class="stat-icon">&lt;</div>
+                <div class="stat-value">120 ms</div>
+                <div class="stat-label">Response Time</div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon">%</div>
+                <div class="stat-value">99.99%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon">*</div>
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">AI Monitoring</div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon">#</div>
+                <div class="stat-value">2.4M</div>
+                <div class="stat-label">Threats Blocked</div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+    
+    <!-- Mobile Menu JS -->
+    <script>
+        const burger = document.getElementById('mobileBurger');
+        const overlay = document.getElementById('mobileOverlay');
+        const menu = document.getElementById('mobileMenu');
+        
+        function toggleMenu() {
+            burger.classList.toggle('active');
+            overlay.classList.toggle('active');
+            menu.classList.toggle('active');
+        }
+        
+        burger.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && burger.classList.contains('active')) {
+                toggleMenu();
+                burger.focus();
+            }
+        });
+        
+        // Close on resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 720) {
+                burger.classList.remove('active');
+                overlay.classList.remove('active');
+                menu.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
