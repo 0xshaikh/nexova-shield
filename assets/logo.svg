@@ -1,6 +1,35 @@
 <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
-  <path fill="#00d4aa" d="M240 0A240 240 0 0 0 0 240a240 240 0 0 0 240 0Z"/>
-  <path fill="#00d4aa" d="M240 480A240 240 0 0 0 0 240a240 240 0 0 0 240 240Z"/>
-  <path fill="#00d4aa" d="M480 240A240 240 0 0 0 240 0a240 240 0 0 0 240 240Z"/>
-  <path fill="#00d4aa" d="M480 240a240 240 0 0 0-240 240 240 240 0 0 0 240-240Z"/>
+  <!-- Shield shape -->
+  <path d="M240 20 L440 100 L440 240 C440 360 340 440 240 460 C140 440 40 360 40 240 L40 100 Z" 
+        fill="none" 
+        stroke="#00d4aa" 
+        stroke-width="16"
+        stroke-linejoin="round"/>
+  
+  <!-- Inner shield -->
+  <path d="M240 60 L400 124 L400 240 C400 340 320 404 240 420 C160 404 80 340 80 240 L80 124 Z" 
+        fill="rgba(0, 212, 170, 0.1)"/>
+  
+  <!-- Code brackets -->
+  <text x="240" y="220" 
+        font-family="monospace" 
+        font-size="80" 
+        font-weight="bold"
+        fill="#00d4aa" 
+        text-anchor="middle"
+        dominant-baseline="middle">
+    &lt;/&gt;
+  </text>
+  
+  <!-- Scan lines -->
+  <line x1="120" y1="280" x2="360" y2="280" stroke="#00d4aa" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+  <line x1="140" y1="310" x2="340" y2="310" stroke="#00d4aa" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+  <line x1="160" y1="340" x2="320" y2="340" stroke="#00d4aa" stroke-width="4" stroke-linecap="round" opacity="0.2"/>
+  
+  <!-- Dot indicator -->
+  <circle cx="360" cy="310" r="8" fill="#00d4aa"/>
+  
+  <!-- Keyhole -->
+  <circle cx="240" cy="380" r="12" fill="none" stroke="#00d4aa" stroke-width="4"/>
+  <rect x="234" y="380" width="12" height="20" fill="#00d4aa"/>
 </svg>

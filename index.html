@@ -688,7 +688,7 @@
     <div class="content-wrapper">
         <!-- Header -->
         <header class="header">
-            <button class="logo-btn" aria-label="ShieldSeek" onclick="window.location.href='/'">
+            <button class="logo-btn" aria-label="ShieldSeek" onclick="window.location.href='https://0xshaikh.github.io/shieldseek/'">
                 <img src="assets/logo.svg" alt="ShieldSeek" width="52" height="52">
             </button>
             
@@ -862,6 +862,27 @@
             const searchResults = document.getElementById('searchResults');
             const resultsList = document.getElementById('resultsList');
             
+            // Demo data for when backend is not available
+            const demoResults = [
+                {
+                    url: 'https://example.com',
+                    threats: [{type: 'XSS Attempt', severity: 'MEDIUM', pattern: '<script> tag detected'}],
+                    securityChecks: {
+                        'Content-Security-Policy': false,
+                        'X-Frame-Options': false,
+                        'X-XSS-Protection': false,
+                        'Strict-Transport-Security': false,
+                        'X-Content-Type-Options': false
+                    },
+                    recommendations: [
+                        'Add Content-Security-Policy header',
+                        'Enable HTTP Strict Transportation Security',
+                        'Add X-Frame-Options header',
+                        'Sanitize all user inputs and outputs'
+                    ]
+                }
+            ];
+            
             searchForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
@@ -873,16 +894,17 @@
                 
                 // Show loading state
                 searchResults.classList.add('active');
-                resultsList.innerHTML = '<div class="result-item"><span class="result-icon">⏳</span><span class="result-text">Scanning...</span></div>';
+                resultsList.innerHTML = '<div class="result-item"><span class="result-icon">⏳</span><span class="result-text">Scanning ' + url + '...</span></div>';
                 
                 try {
-                    // Call backend API to scan the URL
+                    // Try to call backend API
                     const response = await fetch('http://localhost:3000/api/scan', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ url: url })
+                        body: JSON.stringify({ url: url }),
+                        signal: AbortSignal.timeout(5000) // 5 second timeout
                     });
                     
                     const data = await response.json();
@@ -960,13 +982,91 @@
                     }
                     
                 } catch (error) {
-                    resultsList.innerHTML = `
+                    // Backend not available - show demo results
+                    console.log('Backend not available, showing demo results:', error.message);
+                    
+                    const demo = demoResults[0];
+                    
+                    // Clear previous results
+                    resultsList.innerHTML = '';
+                    
+                    // Add demo notice
+                    resultsList.innerHTML += `
                         <div class="result-item">
-                            <span class="result-icon">❌</span>
-                            <span class="result-text">Scan failed: ${error.message}</span>
-                            <span class="result-status status-danger">ERROR</span>
+                            <span class="result-icon">ℹ️</span>
+                            <span class="result-text">Demo Mode - Backend not connected</span>
+                            <span class="result-status status-warning">DEMO</span>
                         </div>
                     `;
+                    
+                    // Check if URL is safe (demo)
+                    const hasThreats = demo.threats && demo.threats.length > 0;
+                    const hasWarnings = demo.securityChecks && Object.values(demo.securityChecks).some(v => v === false);
+                    
+                    // Show overall status
+                    let status = 'safe';
+                    let statusIcon = '✅';
+                    let statusText = 'No Major Issues Found';
+                    
+                    if (hasThreats) {
+                        status = 'danger';
+                        statusIcon = '🚨';
+                        statusText = 'Critical Threats Detected';
+                    } else if (hasWarnings) {
+                        status = 'warning';
+                        statusIcon = '⚠️';
+                        statusText = 'Security Warnings Found';
+                    }
+                    
+                    // Add status header
+                    resultsList.innerHTML += `
+                        <div class="result-item">
+                            <span class="result-icon">${statusIcon}</span>
+                            <span class="result-text">${statusText}</span>
+                            <span class="result-status status-${status}">${status.toUpperCase()}</span>
+                        </div>
+                    `;
+                    
+                    // Show threats if any
+                    if (hasThreats) {
+                        demo.threats.forEach(function(threat) {
+                            resultsList.innerHTML += `
+                                <div class="result-item">
+                                    <span class="result-icon">🔴</span>
+                                    <span class="result-text">${threat.type}</span>
+                                    <span class="result-status status-danger">${threat.severity}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    // Show security checks
+                    if (demo.securityChecks) {
+                        Object.keys(demo.securityChecks).forEach(function(check) {
+                            if (!demo.securityChecks[check]) {
+                                resultsList.innerHTML += `
+                                    <div class="result-item">
+                                        <span class="result-icon">⚠️</span>
+                                        <span class="result-text">${check}</span>
+                                        <span class="result-status status-warning">MISSING</span>
+                                    </div>
+                                `;
+                            }
+                        });
+                    }
+                    
+                    // Show recommendations if any
+                    if (demo.recommendations && demo.recommendations.length > 0) {
+                        resultsList.innerHTML += '<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);"><strong style="color: #00d4aa;">Recommendations:</strong></div>';
+                        demo.recommendations.forEach(function(rec) {
+                            resultsList.innerHTML += `
+                                <div class="result-item">
+                                    <span class="result-icon">💡</span>
+                                    <span class="result-text">${rec}</span>
+                                </div>
+                            `;
+                        });
+                    }
                 }
             });
         });
