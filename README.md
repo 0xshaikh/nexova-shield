@@ -1,19 +1,19 @@
-# NEXOVA Shield 🛡️
+# ShieldSeek 🛡️
 
 **AI-Powered Cyber Security That Never Sleeps**
 
-[![GitHub stars](https://img.shields.io/github/stars/0xshaikh/nexova-shield?style=social)](https://github.com/0xshaikh/nexova-shield/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/0xshaikh/shieldseek?style=social)](https://github.com/0xshaikh/shieldseek/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/license/mit)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)](https://nodejs.org/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-blue)](https://0xshaikh.github.io/nexova-shield/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-blue)](https://0xshaikh.github.io/shieldseek/)
 
 ## 📸 Screenshots
 
-![NEXOVA Shield Website](screenshots/website.png)
+![ShieldSeek Website](screenshots/website.png)
 
 ## 🚀 Overview
 
-NEXOVA Shield is a super intelligent AI security platform that monitors, detects, and defends against threats 24/7. Built for websites, servers, and applications that need real-time protection.
+ShieldSeek is a super intelligent AI security platform that monitors, detects, and defends against threats 24/7. Built for websites, servers, and applications that need real-time protection.
 
 ## ✨ Features
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXOVA Shield - AI-Powered Cyber Security</title>
+    <title>ShieldSeek - AI-Powered Cyber Security</title>
     <meta name="description" content="Super intelligent AI security shield for your websites and servers. 24/7 threat detection, automatic defense, and proactive bounty hunting.">
     
     <!-- Fonts -->
@@ -527,6 +527,153 @@
                 filter: none;
             }
         }
+        
+        /* Search Bar */
+        .search-bar-container {
+            margin: 24px 0;
+            max-width: 600px;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(22px);
+            animation: reveal 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation-delay: 0.5s;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 999px;
+            padding: 6px 6px 6px 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        
+        .search-bar:focus-within {
+            border-color: rgba(0, 212, 170, 0.5);
+            box-shadow: 0 0 20px rgba(0, 212, 170, 0.2);
+        }
+        
+        .search-bar .fa-magnifying-glass {
+            color: var(--muted);
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 15px;
+            font-family: inherit;
+            padding: 12px 16px;
+            outline: none;
+        }
+        
+        .search-bar input::placeholder {
+            color: var(--muted);
+        }
+        
+        .search-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #00d4aa, #00b894);
+            color: #000;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .search-btn:hover {
+            background: linear-gradient(135deg, #00e6ba, #00ccaa);
+            transform: scale(1.02);
+        }
+        
+        .search-btn .fa-arrow-right {
+            font-size: 12px;
+        }
+        
+        .search-hint {
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        
+        /* Search Results */
+        .search-results {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            display: none;
+        }
+        
+        .search-results.active {
+            display: block;
+            animation: reveal 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .search-results h3 {
+            color: var(--text);
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .result-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-icon {
+            font-size: 16px;
+        }
+        
+        .result-text {
+            color: var(--text);
+            font-size: 14px;
+        }
+        
+        .result-status {
+            margin-left: auto;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-weight: 500;
+        }
+        
+        .status-safe {
+            background: rgba(0, 212, 170, 0.2);
+            color: #00d4aa;
+        }
+        
+        .status-warning {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+        }
+        
+        .status-danger {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+        }
     </style>
 </head>
 <body>
@@ -541,14 +688,14 @@
     <div class="content-wrapper">
         <!-- Header -->
         <header class="header">
-            <button class="logo-btn" aria-label="NEXOVA Shield" onclick="window.location.href='/'">
-                <img src="assets/logo.svg" alt="NEXOVA Shield" width="52" height="52">
+            <button class="logo-btn" aria-label="ShieldSeek" onclick="window.location.href='/'">
+                <img src="assets/logo.svg" alt="ShieldSeek" width="52" height="52">
             </button>
             
             <nav class="nav-pill">
                 <a href="/" class="nav-link active">Home</a>
                 <a href="features.html" class="nav-link">Features</a>
-                <a href="https://github.com/0xshaikh/nexova-shield" target="_blank" class="nav-link">GitHub</a>
+                <a href="https://github.com/0xshaikh/shieldseek" target="_blank" class="nav-link">GitHub</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </nav>
             
@@ -567,7 +714,7 @@
         <div class="mobile-menu" id="mobileMenu" role="menu">
             <a href="/" role="menuitem">Home</a>
             <a href="features.html" role="menuitem">Features</a>
-            <a href="https://github.com/0xshaikh/nexova-shield" target="_blank" role="menuitem">GitHub</a>
+            <a href="https://github.com/0xshaikh/shieldseek" target="_blank" role="menuitem">GitHub</a>
             <a href="#contact" role="menuitem">Contact</a>
             <a href="#signup" role="menuitem" style="color: #00d4aa; font-weight: 600;">Sign In</a>
         </div>
@@ -598,13 +745,32 @@
             
             <!-- Subhead -->
             <p class="subhead">
-                NEXOVA Shield protects your websites and servers with AI-powered threat detection, 
+                ShieldSeek protects your websites and servers with AI-powered threat detection, 
                 automatic defense mechanisms, and 24/7 monitoring. Built for developers and businesses 
                 that need real security.
             </p>
             
+            <!-- Search Bar -->
+            <div class="search-bar-container">
+                <form id="searchForm" class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="url" id="searchInput" placeholder="Enter your website URL (e.g., https://example.com)" required>
+                    <button type="submit" class="search-btn">
+                        Scan Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+                <p class="search-hint">Enter your website URL to detect security vulnerabilities</p>
+            </div>
+            
+            <!-- Search Results -->
+            <div id="searchResults" class="search-results">
+                <h3>🔍 Scan Results</h3>
+                <div id="resultsList"></div>
+            </div>
+            
             <!-- CTA -->
-            <a href="https://github.com/0xshaikh/nexova-shield" target="_blank" class="cta-btn">
+            <a href="https://github.com/0xshaikh/shieldseek" target="_blank" class="cta-btn">
                 View on GitHub
                 <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
             </a>
@@ -687,6 +853,120 @@
             window.addEventListener('resize', function() {
                 if (window.innerWidth > 720) {
                     closeMenu();
+                }
+            });
+            
+            // Search Form Handler
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            const resultsList = document.getElementById('resultsList');
+            
+            searchForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const url = searchInput.value.trim();
+                
+                if (!url) {
+                    return;
+                }
+                
+                // Show loading state
+                searchResults.classList.add('active');
+                resultsList.innerHTML = '<div class="result-item"><span class="result-icon">⏳</span><span class="result-text">Scanning...</span></div>';
+                
+                try {
+                    // Call backend API to scan the URL
+                    const response = await fetch('http://localhost:3000/api/scan', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ url: url })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    // Clear previous results
+                    resultsList.innerHTML = '';
+                    
+                    // Check if URL is safe
+                    const hasThreats = data.threats && data.threats.length > 0;
+                    const hasWarnings = data.securityChecks && Object.values(data.securityChecks).some(v => v === false);
+                    
+                    // Show overall status
+                    let status = 'safe';
+                    let statusIcon = '✅';
+                    let statusText = 'No Major Issues Found';
+                    
+                    if (hasThreats) {
+                        status = 'danger';
+                        statusIcon = '🚨';
+                        statusText = 'Critical Threats Detected';
+                    } else if (hasWarnings) {
+                        status = 'warning';
+                        statusIcon = '⚠️';
+                        statusText = 'Security Warnings Found';
+                    }
+                    
+                    // Add status header
+                    resultsList.innerHTML += `
+                        <div class="result-item">
+                            <span class="result-icon">${statusIcon}</span>
+                            <span class="result-text">${statusText}</span>
+                            <span class="result-status status-${status}">${status.toUpperCase()}</span>
+                        </div>
+                    `;
+                    
+                    // Show threats if any
+                    if (hasThreats) {
+                        data.threats.forEach(function(threat) {
+                            resultsList.innerHTML += `
+                                <div class="result-item">
+                                    <span class="result-icon">🔴</span>
+                                    <span class="result-text">${threat.type}</span>
+                                    <span class="result-status status-danger">${threat.severity}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    // Show security checks
+                    if (data.securityChecks) {
+                        Object.keys(data.securityChecks).forEach(function(check) {
+                            if (!data.securityChecks[check]) {
+                                resultsList.innerHTML += `
+                                    <div class="result-item">
+                                        <span class="result-icon">⚠️</span>
+                                        <span class="result-text">${check}</span>
+                                        <span class="result-status status-warning">MISSING</span>
+                                    </div>
+                                `;
+                            }
+                        });
+                    }
+                    
+                    // Show recommendations if any
+                    if (data.recommendations && data.recommendations.length > 0) {
+                        resultsList.innerHTML += '<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);"><strong style="color: #00d4aa;">Recommendations:</strong></div>';
+                        data.recommendations.forEach(function(rec) {
+                            resultsList.innerHTML += `
+                                <div class="result-item">
+                                    <span class="result-icon">💡</span>
+                                    <span class="result-text">${rec}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                } catch (error) {
+                    resultsList.innerHTML = `
+                        <div class="result-item">
+                            <span class="result-icon">❌</span>
+                            <span class="result-text">Scan failed: ${error.message}</span>
+                            <span class="result-status status-danger">ERROR</span>
+                        </div>
+                    `;
                 }
             });
         });
